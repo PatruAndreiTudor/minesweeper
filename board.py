@@ -3,9 +3,9 @@ from cells import Cell
 
 class Board(pygame.sprite.Sprite):
 
-    def __init__(self,rows,cols,num_bombs,cell_size,images):
+    def __init__(self,row,col,num_bombs,cell_size,images):
         super().__init__()
-        self.remaining_cells = None
+        self.remaining_cells = row*col - num_bombs
         self.is_started = True
         self.is_finished = False
         self.num_bombs = num_bombs
@@ -18,6 +18,6 @@ class Board(pygame.sprite.Sprite):
             self.sprite_group.draw(surface)
 
         def update(self):
-            self.sprite_group.update()
+            self.sprite_group.update() #comment
         
 
