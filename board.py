@@ -16,10 +16,9 @@ class Board(pygame.sprite.Sprite):
         self.game_active = True
         self.images = images
         self.is_finished = False
-        self.surf = pygame.Surface((self.cols*self.size,self.rows*self.size))
+        self.surf = pygame.Surface((self.cols*self.size, self.rows*self.size))
         self.rect = self.surf.get_rect(topleft=offset_pos)
         self.restart_button = self.images["smiley"]
-        
         self.grid = []
         self.sprite_group = pygame.sprite.Group() #container class to hold and manage multiple Sprite Objects
         
@@ -27,12 +26,12 @@ class Board(pygame.sprite.Sprite):
         for row in range(self.rows):
             current_row = []
             for col in range(self.cols):
-                new_cell = Cell(col,row,self.images,self.size)
+                new_cell = Cell(col, row, self.images, self.size)
                 current_row.append(new_cell)
                 self.sprite_group.add(new_cell)
             self.grid.append(current_row)
 
-    def handle_click(self,mouse_pos,button):
+    def handle_click(self, mouse_pos, button):
         if not self.rect.collidepoint(mouse_pos):
             print("Please click on a cell to start the game")
             return
@@ -60,9 +59,7 @@ class Board(pygame.sprite.Sprite):
                 print("You must start the game before flagging a cell")
                 return
 
-
-
-    def board_reveal(self,cell):
+    def board_reveal(self, cell):
         if cell.is_flagged:
             print("You cannot reveal a flagged cell")
             return
@@ -79,14 +76,11 @@ class Board(pygame.sprite.Sprite):
             self.restart_button = self.images["lose"]
             print("You lost!")
             return
-
-        
         if cell.adjacent_bombs == 0:
             neighbors = self.get_neighbors(cell)
             for neighbor in neighbors:
                 if not neighbor.is_revealed:
                     self.board_reveal(neighbor)
-        
         total_revealed = sum ( 1 for row in self.grid for item in row if item.is_revealed)
         if total_revealed == (self.rows * self.cols) - self.num_bombs:
             self.game_active = False
@@ -96,11 +90,11 @@ class Board(pygame.sprite.Sprite):
             print("You won!")
             return
      
-    def place_bombs(self,safe_cell):
+    def place_bombs(self, safe_cell):
         neighbors = self.get_neighbors(safe_cell)
         neighbors.append(safe_cell)
         candidates = [ cell for row in self.grid for cell in row if cell not in neighbors]
-        bomb_cells = random.sample(candidates,self.num_bombs)
+        bomb_cells = random.sample(candidates, self.num_bombs)
         for cell in bomb_cells:
             cell.is_bomb = True
 
@@ -111,7 +105,7 @@ class Board(pygame.sprite.Sprite):
             return 0
         return total
 
-    def get_neighbors(self,cell):
+    def get_neighbors(self, cell):
         neighbors=[]
         col_neighbor=[-1,0,1]
         row_neighbor=[-1,0,1]
@@ -136,8 +130,5 @@ class Board(pygame.sprite.Sprite):
     def draw(self, screen):
         self.sprite_group.draw(self.surf)
         screen.blit(self.surf, self.rect)
-
-    def update(self):
-        self.sprite_group.update() 
         
 

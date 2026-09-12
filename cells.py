@@ -11,11 +11,9 @@ class Cell(pygame.sprite.Sprite):
         self.images = images
         self.is_bomb = False
         self.size = size
-        
         self.is_revealed = False
         self.is_flagged = False
         self.adjacent_bombs = 0
-
         self.image = self.images["hidden"]
         self.rect = self.image.get_rect(topleft = (self.cols * self.size, self.rows * self.size)) 
         
